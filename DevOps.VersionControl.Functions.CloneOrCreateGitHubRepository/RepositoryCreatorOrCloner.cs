@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using static Common.Functions.ClearDirectory.DirectoryClearer;
 using static DevOps.VersionControl.Functions.CheckIfGitHubRepositoryExists.GitHubRepositoryExistenceChecker;
 using static DevOps.VersionControl.Functions.CreateAndInitDotNetGitHubRepository.RepositoryCreator;
+using static DevOps.VersionControl.Functions.GetGitHubRepoRemoteUri.RemoteUriGetter;
 using static DevOps.VersionControl.Functions.RunGitCloneCommand.GitCloneCommandRunner;
 using static Metaproject.Users.CDorst.GitHubAccessToken.GitHubCredentials;
 
@@ -17,7 +18,7 @@ namespace DevOps.VersionControl.Functions.CloneOrCreateGitHubRepository
             credentials = credentials ?? CDorst;
             var repository = new AccountRepository(credentials.Value.User, name);
             Clear(directory);
-            if (await Exists(repository)) Clone(directory, $"{repository.Uri}.git");
+            if (await Exists(repository)) Clone(directory, RemoteUri(repository).ToString());
             else await CreateRepository(directory, name, description, credentials, user);
         }
     }
