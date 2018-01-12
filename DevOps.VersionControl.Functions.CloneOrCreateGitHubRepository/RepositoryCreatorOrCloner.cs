@@ -13,10 +13,10 @@ namespace DevOps.VersionControl.Functions.CloneOrCreateGitHubRepository
 {
     public static class RepositoryCreatorOrCloner
     {
-        public static async Task CloneOrCreate(string directory, string name, string description, BasicAuthenticationCredentials? credentials = null, UserInfo? user = null)
+        public static async Task CloneOrCreate(string directory, string name, string description, BasicAuthenticationCredentials credentials = null, UserInfo? user = null)
         {
             credentials = credentials ?? CDorst;
-            var repository = new AccountRepository(credentials.Value.User, name);
+            var repository = new AccountRepository(credentials.User, name);
             Clear(directory);
             if (await Exists(repository)) Clone(directory, RemoteUri(repository).ToString());
             else await CreateRepository(directory, name, description, credentials, user);
